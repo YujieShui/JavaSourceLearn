@@ -34,6 +34,18 @@ package java.lang;
  * @see     java.lang.Class
  * @since   JDK1.0
  */
+
+/**
+ * Object是所有类的父类，总共有11个方法
+ *      并发相关：wait() wait(long) wait(long, int)、notify()、notifyAll()
+ *      类相关的：
+ *          getClass() 用于反射
+ *          hashCode()、equals() 用于比较判断之类
+ *          clone() 用于对象复制（浅拷贝、深拷贝）
+ *          toString() 打印对象
+ *      JVM 垃圾回收：
+ *          finalize() 垃圾回收之前调用
+ */
 public class Object {
 
     private static native void registerNatives();
