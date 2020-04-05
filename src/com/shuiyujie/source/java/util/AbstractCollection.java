@@ -451,10 +451,13 @@ public abstract class AbstractCollection<E> implements Collection<E> {
      * @return a string representation of this collection
      */
     public String toString() {
+        // 获取迭代器
         Iterator<E> it = iterator();
+        // 判断迭代器是否为空
         if (! it.hasNext())
             return "[]";
 
+        // 做字符串的拼接 => [xxx, xxx, xxx]
         StringBuilder sb = new StringBuilder();
         sb.append('[');
         for (;;) {

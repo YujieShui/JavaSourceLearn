@@ -226,7 +226,9 @@ public class LinkedList<E>
             x.next = null;
         }
 
+        // 元素设置为空
         x.item = null;
+        // 长短--
         size--;
         modCount++;
         return element;
@@ -562,16 +564,21 @@ public class LinkedList<E>
 
     /**
      * Returns the (non-null) Node at the specified element index.
+     * 根据索引 index 来查找
      */
     Node<E> node(int index) {
         // assert isElementIndex(index);
 
         if (index < (size >> 1)) {
+            // 如果 index 小于链表长度的一半
+            // 那就从头开始，往后遍历
             Node<E> x = first;
             for (int i = 0; i < index; i++)
                 x = x.next;
             return x;
         } else {
+            // 如果 index 大于等于链表长度的一半
+            // 那就从后往前找
             Node<E> x = last;
             for (int i = size - 1; i > index; i--)
                 x = x.prev;

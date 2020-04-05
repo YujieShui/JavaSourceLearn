@@ -3207,11 +3207,14 @@ public class Arrays {
      */
     public static <T,U> T[] copyOf(U[] original, int newLength, Class<? extends T[]> newType) {
         @SuppressWarnings("unchecked")
+        // 三元运算符，创建一个新的数组，新数组的长度一定和集合的size一样
         T[] copy = ((Object)newType == (Object)Object[].class)
             ? (T[]) new Object[newLength]
             : (T[]) Array.newInstance(newType.getComponentType(), newLength);
+        // 进行数组的拷贝
         System.arraycopy(original, 0, copy, 0,
                          Math.min(original.length, newLength));
+        // 返回拷贝得到的新数组
         return copy;
     }
 
