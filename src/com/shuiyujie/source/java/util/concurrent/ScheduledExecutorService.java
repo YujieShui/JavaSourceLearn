@@ -91,6 +91,11 @@ package java.util.concurrent;
  * @since 1.5
  * @author Doug Lea
  */
+
+/**
+ * ScheduledExecutorService:
+ * what: ExecutorService的子接口,具备了延迟运行或定期执行任务的能力
+ */
 public interface ScheduledExecutorService extends ExecutorService {
 
     /**

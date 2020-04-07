@@ -68,6 +68,42 @@ import sun.security.util.SecurityConstants;
  * @since 1.5
  * @author Doug Lea
  */
+
+/**
+ * Q: ExecutorService 是 Java 定义线程池的接口,接口是无法直接创建对象的,那么我们该如何获取ExecutorService的对象呢?
+ * A: 通过 Executors 类中的静态方法，创建 ExecutorService 对象
+ *
+ * static ExecutorService newCachedThreadPool()
+ *              创建一个默认的线程池对象,里面的线程可重用,且在第一次使用时才创建
+ * static ExecutorService newCachedThreadPool(ThreadFactory threadFactory)
+ *              线程池中的所有线程都使用ThreadFactory来创建,这样的线程无需手动启动,自动执行;
+ * static ExecutorService newFixedThreadPool(int nThreads)
+ *              创建一个可重用固定线程数的线程池
+ * static ExecutorService newFixedThreadPool(int nThreads, ThreadFactory threadFactory)
+ *              创建一个可重用固定线程数的线程池且线程池中的所有线程都使用ThreadFactory来创建。
+ * static ExecutorService newSingleThreadExecutor()
+ *              创建一个使用单个 worker 线程的 Executor，以无界队列方式来运行该线程。
+ * static ExecutorService newSingleThreadExecutor(ThreadFactory threadFactory)
+ *              创建一个使用单个 worker 线程的 Executor，且线程池中的所有线程都使用ThreadFactory来创建。
+ *
+ *
+ * static ScheduledExecutorService newScheduledThreadPool(int corePoolSize)
+ *              创建一个可重用固定线程数的线程池且允许延迟运行或定期执行任务;
+ * static ScheduledExecutorService newScheduledThreadPool(int corePoolSize, ThreadFactory threadFactory)
+ *              创建一个可重用固定线程数的线程池且线程池中的所有线程都使用ThreadFactory来创建,且允许延迟运行或定期执行任务;
+ * static ScheduledExecutorService newSingleThreadScheduledExecutor()
+ *              创建一个单线程执行程序，它允许在给定延迟后运行命令或者定期地执行。
+ * static ScheduledExecutorService newSingleThreadScheduledExecutor(ThreadFactory threadFactory)
+ *              创建一个单线程执行程序，它可安排在给定延迟后运行命令或者定期地执行。
+ * <V> ScheduledFuture<V> schedule(Callable<V> callable, long delay, TimeUnit unit)
+ *              延迟时间单位是unit,数量是delay的时间后执行callable。
+ *  ScheduledFuture<?> schedule(Runnable command, long delay, TimeUnit unit)
+ *              延迟时间单位是unit,数量是delay的时间后执行command。
+ *  ScheduledFuture<?> scheduleAtFixedRate(Runnable command, long initialDelay, long period, TimeUnit unit)
+ *              延迟时间单位是unit,数量是initialDelay的时间后,每间隔period时间重复执行一次command。
+ *  ScheduledFuture<?> scheduleWithFixedDelay(Runnable command, long initialDelay, long delay, TimeUnit unit)
+ *              创建并执行一个在给定初始延迟后首次启用的定期操作，随后，在每一次执行终止和下一次执行开始之间都存在给定的延迟。
+ */
 public class Executors {
 
     /**

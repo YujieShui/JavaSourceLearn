@@ -1,3 +1,9 @@
+.idea
+.DS_Store
+./cache
+*.iml
+out
+
 # Compiled class file
 *.class
 

@@ -134,6 +134,15 @@ import java.util.Collection;
  * @since 1.5
  * @author Doug Lea
  */
+
+/**
+ * ExecutorService 接口是 Java 内置的线程池接口:
+ *      void shutdown()   启动一次顺序关闭，执行以前提交的任务，但不接受新任务。
+ *      List<Runnable> shutdownNow() 停止所有正在执行的任务，暂停处理正在等待的任务，并返回等待执行的任务列表。
+ *      <T> Future<T> submit(Callable<T> task)  执行带返回值的任务，返回一个Future对象。
+ *      Future<?> submit(Runnable task)  执行 Runnable 任务，并返回一个表示该任务的 Future。
+ *      <T> Future<T> submit(Runnable task, T result)  执行 Runnable 任务，并返回一个表示该任务的 Future。
+ */
 public interface ExecutorService extends Executor {
 
     /**
