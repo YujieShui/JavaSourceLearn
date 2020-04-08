@@ -47,6 +47,17 @@ package java.io;
  * @since       JDK1.1
  */
 
+/**
+ * java.io.Writer 抽象类是表示用于写出字符流的所有类的超类，将指定的字符信息写出到目的地。它定义了字节输出流的基本共性功能方法。
+ *
+ * void write(int c) 写入单个字符。
+ * void write(char[] cbuf) 写入字符数组。
+ * abstract void write(char[] cbuf, int off, int len) 写入字符数组的某一部分,off数组的开始索引,len写的字符个数。
+ * void write(String str) 写入字符串。
+ * void write(String str, int off, int len) 写入字符串的某一部分,off字符串的开始索引,len写的字符个数。
+ * void flush() 刷新该流的缓冲。
+ * void close() 关闭此流，但要先刷新它。
+ */
 public abstract class Writer implements Appendable, Closeable, Flushable {
 
     /**

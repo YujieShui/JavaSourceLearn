@@ -118,6 +118,16 @@ import sun.util.spi.XmlPropertiesProvider;
  * @author  Xueming Shen
  * @since   JDK1.0
  */
+
+/**
+ * java.util.Properties 继承于 Hashtable ，来表示一个持久的属性集。
+ * 它使用键值结构存储数据，每个键及其对应值都是一个字符串。
+ * 该类也被许多Java类使用，比如获取系统属性时，System.getProperties 方法就是返回一个Properties对象。
+ *
+ * public Object setProperty(String key, String value) ： 保存一对属性。
+ * public String getProperty(String key) ：使用此属性列表中指定的键搜索属性值。
+ * public Set<String> stringPropertyNames() ：所有键的名称的集合。
+ */
 public
 class Properties extends Hashtable<Object,Object> {
     /**
