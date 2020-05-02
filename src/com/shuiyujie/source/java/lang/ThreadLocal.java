@@ -124,6 +124,8 @@ public class ThreadLocal<T> {
      * @return the initial value for this thread-local
      */
     protected T initialValue() {
+        // 默认是没有返回值的
+        // 所以建议重写这个方法，给它一个初值
         return null;
     }
 
@@ -157,10 +159,20 @@ public class ThreadLocal<T> {
      * @return the current thread's value of this thread-local
      */
     public T get() {
+        // 获取当前线程
         Thread t = Thread.currentThread();
+        // 每个线程 Thread 有且持有一个 ThreadLocalMap
         ThreadLocalMap map = getMap(t);
+
+        // 接下来就有两种情况了：
+        // 1. 如果之前已经初始化，比如 set() 或者吊用过 initialValue() 方法了，就会从 ThreadLocalMap 取对应的值
+        // 2. 如果之前没有初始化，就会调用初始化的方法，返回默认值
+        //      没有重写 initialValue() 就会返回 null，重写了就返回初始化的值
+
         if (map != null) {
+            // 在 ThreadLocalMap 中，通过当前的 ThreadLocal 对象，获取其对应的值
             ThreadLocalMap.Entry e = map.getEntry(this);
+            // 不为空的话就返回，为空任然会调用初始化的方法
             if (e != null) {
                 @SuppressWarnings("unchecked")
                 T result = (T)e.value;
@@ -200,6 +212,8 @@ public class ThreadLocal<T> {
         Thread t = Thread.currentThread();
         ThreadLocalMap map = getMap(t);
         if (map != null)
+            // key 是当前 ThreadLocal
+            // value 就是对应的值
             map.set(this, value);
         else
             createMap(t, value);
@@ -310,8 +324,19 @@ public class ThreadLocal<T> {
             Object value;
 
             Entry(ThreadLocal<?> k, Object v) {
+                // 初始化的时候使用了 WeakReference 的构造方法
+                // 也就是说 Entry 的 key 是一个弱引用
+                // 弱引用不会阻止 GC
                 super(k);
+
+                // Entry 的 value 则是一个强引用
+                // 存在强引用就无法进行 GC
                 value = v;
+
+                // value 的内存泄露问题
+                // 正常情况下，线程终止，保存在 ThreadLocal 中的 value 也就自然而然被垃圾回收器回收了；
+                // 但如果使用的是线程池，线程的生命周期很长，基本上与程序同生共死，那么 value 就无法被回收
+                // 此时调用的链路为：Thread -> ThreadLocalMap -> Entry(key为null) -> value
             }
         }
 
