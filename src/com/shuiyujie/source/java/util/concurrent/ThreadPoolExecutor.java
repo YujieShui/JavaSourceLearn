@@ -1131,6 +1131,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
         w.unlock(); // allow interrupts
         boolean completedAbruptly = true;
         try {
+            // while 循环表示 runWorker 一直运行，始终会执行任务
             while (task != null || (task = getTask()) != null) {
                 w.lock();
                 // If pool is stopping, ensure thread is interrupted;
@@ -1146,6 +1147,8 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
                     beforeExecute(wt, task);
                     Throwable thrown = null;
                     try {
+                        // 运行 Runnable 的 run() 方法
+                        // 来执行一个个任务
                         task.run();
                     } catch (RuntimeException x) {
                         thrown = x; throw x;
@@ -1363,6 +1366,8 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
          * and so reject the task.
          */
         int c = ctl.get();
+
+        // 先比较核心线程数，如果还没有达到，而且有新的任务进来，就会去增加 worker
         if (workerCountOf(c) < corePoolSize) {
             if (addWorker(command, true))
                 return;
