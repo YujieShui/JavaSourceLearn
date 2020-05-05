@@ -93,9 +93,12 @@ public class CopyOnWriteArrayList<E>
     private static final long serialVersionUID = 8673264195747942595L;
 
     /** The lock protecting all mutators */
+    // 由于要上锁，采用的是 ReentrantLock
+    // try...finally...
     final transient ReentrantLock lock = new ReentrantLock();
 
     /** The array, accessed only via getArray/setArray. */
+    // 底层数据结构使用的数组 array
     private transient volatile Object[] array;
 
     /**
@@ -384,6 +387,8 @@ public class CopyOnWriteArrayList<E>
 
     @SuppressWarnings("unchecked")
     private E get(Object[] a, int index) {
+        // get 操作没有其他的操作，完全不加锁
+        // 证明 get 操作完全不会阻塞
         return (E) a[index];
     }
 
@@ -436,8 +441,11 @@ public class CopyOnWriteArrayList<E>
         try {
             Object[] elements = getArray();
             int len = elements.length;
+            // 复制一个新的容器
             Object[] newElements = Arrays.copyOf(elements, len + 1);
+            // 在新的容器中写入元素
             newElements[len] = e;
+            // 将引用指向新的容器，这样就完成了一次 CopyOnWrite 的操作
             setArray(newElements);
             return true;
         } finally {
