@@ -127,18 +127,31 @@ public class ReentrantLock implements Lock, java.io.Serializable {
          * subclasses, but both need nonfair try for trylock method.
          */
         final boolean nonfairTryAcquire(int acquires) {
+            // 先获取当前线程
             final Thread current = Thread.currentThread();
+            // 获取状态 state
+            // state是volatile类型，可以保证修改->读取可见性
             int c = getState();
+
+            // 这里是一段防御性的代码。因为按道理来说，一定是 state 状态不为 0 才会进入到这段代码的
+            // 但是进来之后，别的线程任然可能把状态改成0，所以在这里做了判断
+            // 保证代码的健壮性
             if (c == 0) {
                 if (compareAndSetState(0, acquires)) {
                     setExclusiveOwnerThread(current);
                     return true;
                 }
             }
+            // 到这里了，就说明，的确是已经有线程加锁了
+            // 接着判断，发现加锁的线程就是自己，那么就进行重入加锁
             else if (current == getExclusiveOwnerThread()) {
+                // 此时，c=1
+                // nextc = c(1) + acquires(1) = 2
+                // 意思就是算上现在这个线程，已经可重入加锁两次了
                 int nextc = c + acquires;
                 if (nextc < 0) // overflow
                     throw new Error("Maximum lock count exceeded");
+                // 将state设置为2
                 setState(nextc);
                 return true;
             }
@@ -203,9 +216,13 @@ public class ReentrantLock implements Lock, java.io.Serializable {
          * acquire on failure.
          */
         final void lock() {
+            // 首先使用 CAS 的方式，来尝试修改 state 的状态 0 -> 1
             if (compareAndSetState(0, 1))
+                // 如果修改成功，那么就会将 AQS 中的当前线程，设置为自己
                 setExclusiveOwnerThread(Thread.currentThread());
             else
+                // 别的线程来加锁，或者自己可重入加锁
+                // 就会来执行 acquire() 方法
                 acquire(1);
         }
 

@@ -529,6 +529,15 @@ public abstract class AbstractQueuedSynchronizer
 
     /**
      * The synchronization state.
+     *
+     * state 的具体含义，会根据具体实现类的不同而不同：
+     * 1. 在 Semaphore 中，表示"剩余的许可证的数量"
+     * 2. 在 CountDownLatch 中，表示"还需要倒数的数量"
+     * 3. 在 ReentrantLock 中，表示"锁"的占用情况，包括可重入计数
+     *
+     * state 会被并发修改，用 volatile 修饰可以保证线程安全，
+     * 比如 getState、setState、compareAndSetState 都会读取和更新这个状态
+     *
      */
     private volatile int state;
 

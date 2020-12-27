@@ -43,6 +43,26 @@ import sun.security.util.SecurityConstants;
 
 
 /**
+ * 一个线程就是一个程序的执行单元，Java虚拟机允许一个程序创建多个线程，并且并发地执行。
+ * 每个线程都有个优先级，优先级更高的线程，比优先级低的线程，更有机会被优先执行。
+ *
+ * 线程可以被标记成后台线程，也可以不标记，不标记就是正常的工作线程。
+ * 一个线程可以创建子线程，子线程的优先级和这个线程一样，如果父线程是后台线程，那么子线程会是后台线程。
+ *
+ * Java虚拟机启动的时候，会启动一个 main 线程来执行 main() 方法，main线程是一个工作线程，不是后台线程。
+ *
+ * 在下面两种情况下会退出：
+ * 1. 运行的线程执行了 exit
+ * 2. 所有工作线程都挂掉了，只留下守护线程，那守护线程也会直接停止
+ *
+ * 有两种方法可以创建线程：
+ * 1. 写一个类继承 Thread 类，并实现它的 run() 方法，实现这个类再调用它的 start() 方法
+ * 2. 写一个类实现 Runnable，实例化这个类传到 Thread 里面再启动
+ *
+ * 每个线程都有个名字，多个线程可能有多个名字。如果没给名字，默认就是 Thread-0、Thread-1 这样的，
+ * 我们也可以自己制定线程的名字
+ *
+ *
  * A <i>thread</i> is a thread of execution in a program. The Java
  * Virtual Machine allows an application to have multiple threads of
  * execution running concurrently.
@@ -679,6 +699,10 @@ class Thread implements Runnable {
     }
 
     /**
+     * 执行start()方法会使这个线程开始执行，JVM会调用线程的run()方法。
+     * 这个时候，主线程和子线程会一起运行。
+     * 注意，永远不要重复调用线程的 start() 方法。
+     *
      * Causes this thread to begin execution; the Java Virtual Machine
      * calls the <code>run</code> method of this thread.
      * <p>

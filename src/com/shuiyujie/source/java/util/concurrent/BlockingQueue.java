@@ -177,6 +177,16 @@ import java.util.Queue;
  * @author Doug Lea
  * @param <E> the type of elements held in this collection
  */
+
+
+/**
+ * API 可以分成三组：
+ * 1. put, take
+ * 2. add, remove, element
+ * 3. offer, poll, peek
+ *
+ * @param <E>
+ */
 public interface BlockingQueue<E> extends Queue<E> {
     /**
      * Inserts the specified element into this queue if it is possible to do
@@ -218,6 +228,9 @@ public interface BlockingQueue<E> extends Queue<E> {
     boolean offer(E e);
 
     /**
+     * 插入元素，如果队列已满，那就无法继续插入，就会阻塞
+     * 直到队列里面有空闲的空间，才能插入
+     *
      * Inserts the specified element into this queue, waiting if necessary
      * for space to become available.
      *
@@ -253,6 +266,10 @@ public interface BlockingQueue<E> extends Queue<E> {
         throws InterruptedException;
 
     /**
+     * 获取并移除队列的头节点，
+     * 一旦执行 take 时，队列里面没有数据，就会阻塞；
+     * 直到队列中有数据
+     *
      * Retrieves and removes the head of this queue, waiting if necessary
      * until an element becomes available.
      *
